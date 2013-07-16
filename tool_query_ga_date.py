@@ -16,13 +16,14 @@ from apiclient.errors import HttpError
 from oauth2client.client import AccessTokenRefreshError
 from math import ceil, floor
 
+#读取恢复记录
 def read_cPickle(infile):
     list=[]
     f=open(infile,'r')
     list=p.load(f)
     return list
     
-    
+#写结果
 def write_result(list,outfile):
     '''
     write a txt
@@ -44,12 +45,13 @@ def write_result(list,outfile):
     f.close() #close the file   
 
     
-
+#记录未完成队列
 def write_cPickle(list,outfile):
     f = file(outfile, 'w')
     p.dump(list, f) # dump the object to a file
     f.close()
 
+    
 def get_api_query(service,queryVar):
   """Returns a query object to retrieve data from the Core Reporting API.
   Args:
@@ -349,17 +351,19 @@ def gui_get_date(configDict):
     erroLogger=tc.initlog(countCon.getErroLogger())#初始化Log地址
     runLogger=tc.initlog(countCon.getRunLogger())
     
-    queryVarList=tool_read_config.read_queryCsv(FileList)
     ctime=time.strftime('%Y%m%d',time.localtime())
     queryStack=tc.Stack()
     outfile=setdir+'\\date\\'+str(ctime)
  
     if inType=='csv':
+        queryVarList=tool_read_config.read_queryCsv(FileList)
         queryStack=get_inputQueryStack(queryVarList,outfile)
-    elif inType=='sd':        
+    elif inType=='sd':
+        queryVarList=tool_read_config.read_queryCsv(FileList)    
         queryStack=get_scheduleQueryStack(queryVarList,outfile,difdate)#调度模式，获取3天前的数据
     elif inType=='qs':
-        f=outfile+'.qs'
+        f=setdir+'\\date\\'+FileList
+        print u'恢复模式，恢复文件为：',f
         queryStack=read_cPickle(f)
     else:
         print 'input error'
