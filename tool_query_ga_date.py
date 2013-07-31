@@ -273,7 +273,7 @@ def get_inputQueryStack(queryVarList,file):
         outfilename=queryVar['outfilename']
         start_date=queryVar['start_date']
         end_date=queryVar['end_date']
-        outfile=file+'_'+outfilename
+        outfile=file+'_'+outfilename #Test change,need later del end_date
         for id in idList:            
             if queryVar['max_results']=='':
                 max_results=50
@@ -307,7 +307,7 @@ def get_inputQueryStack(queryVarList,file):
                         nt_queryVar['start_date']=new_start_date
                         nt_queryVar['end_date']=new_start_date
                         nt_queryVar['ids']=id
-                        nt_queryVar['outfilename']=outfile
+                        nt_queryVar['outfilename']=outfile+'_'+str(new_start_date)  #test change,need to del 
                         queryStack.push(copy.deepcopy(nt_queryVar))
                 else:
                     print "the input date diff is %d,you should change date!!" % int(day.days)
@@ -374,7 +374,7 @@ def gui_get_date(configDict):
     
     ctime=time.strftime('%Y%m%d',time.localtime())
     queryStack=tc.Stack()
-    outfile=setdir+'\\date\\'+str(ctime)
+    outfile=setdir+'\\date\\'+str(ctime) 
  
     if inType=='csv':
         queryVarList=tool_read_config.read_queryCsv(FileList)

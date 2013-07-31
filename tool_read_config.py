@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 ################################################################################
 
-
+import codecs
 import sys, os,re,csv
 
 def read_queryCsv(infile):
@@ -39,7 +39,7 @@ def read_queryCsv(infile):
                 if line.strip('\n')=='':
                     break
     #need to change coder                       
-                if line.startswith('#')==False:
+                if line.startswith('#')==False and line[:3] != codecs.BOM_UTF8:
                     tmpline.append(line.split(',')) 
             in_file.close()
         except IOError:
@@ -66,6 +66,8 @@ def read_queryCsv(infile):
             if dict['end_date'].count('/'):
                 et=dict['end_date'].replace('/','-')
                 dict['end_date']=et
+                
+            print dict
             queryList.append(dict)
 #return querylist
     return queryList
@@ -83,8 +85,8 @@ def read_config(infile):
                 line=in_file.readline()
                 if not line:
                     break
-                if line.startswith('#')==False:
-                    tmpline.append(line.split(',')) 
+                if line.startswith('#')==False and line[:3] != codecs.BOM_UTF8:
+                    tmpline.append(line.split(','))
             in_file.close()
         except IOError:
             print 'error joining'    
